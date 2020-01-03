@@ -7,6 +7,9 @@
 
 <script>
 export default {
-  name: 'home'
+  name: 'home',
+  created() {
+    this.$http.get('/test')
+  }
 }
 </script>

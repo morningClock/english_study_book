@@ -1,6 +1,11 @@
 // 引入express
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
 
 // 允许跨域类型配置
 app.all('*', (req, res, next) => {
@@ -16,6 +21,9 @@ app.all('*', (req, res, next) => {
   else
     next()
 })
+
+// 连接mongodb数据库
+require('./plugins/db.js')();
 
 // 引入路由(传入app实例)
 require('./routes/web')(app)
