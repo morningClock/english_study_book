@@ -10,7 +10,7 @@
           <el-input v-model="userForm.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="userForm.password"></el-input>
+          <el-input type="password" v-model="userForm.password"></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="captcha">
           <el-input v-model="userForm.captcha"></el-input>
@@ -33,14 +33,11 @@ export default {
       if (value === '') {
         return callback(new Error('请输入验证码'))
       }
-      let res = await this.$http.get(`/captcha/check?captchaID=${this.captchaID}&captcha=${value}`)
-      if (!res.data.error) {
+      try {
+        await this.$http.get(`/captcha/check?captchaID=${this.captchaID}&captcha=${value}`)
         return callback()
-      } else {
-        if (res.data.error === 2) {
-          this.getCaptcha()
-        }
-        return callback(new Error(res.data.message))
+      } catch (e) {
+        return callback(new Error(e.response.data.message))
       }
     }
     return {
@@ -71,8 +68,17 @@ export default {
     submitForm () {
       this.$refs['userForm'].validate(async (valid) => {
         if (valid) {
-          let res = await this.$http.post('/user/login', this.userForm)
-          localStorage.setItem('token', res.data.token)
+          try{
+            let res = await this.$http.post('/user/login', this.userForm)
+            if (res.data.success) {
+              console.log(res.data)
+              localStorage.setItem('token', res.data.token)
+              this.$message.success(res.data.message)
+              this.$router.push('/')
+            }
+          } catch (e) {
+            console.log(e)
+          }
         } else {
           console.log('error submit!!')
           return false

@@ -12,7 +12,7 @@ module.exports = (options) => {
     mail: {
       from: '"EnglishStudyBook验证 👻" <englishstudybook@163.com>', // sender address
       to: options.targetmail, // 接受列表
-      subject: "EnglishStudyBook验证 👻", // 主题
+      subject: "EnglishStudyBook验证", // 主题
       html: `你的验证码：<b>${options.captchaCode}</b>` // html正文
     }
   }

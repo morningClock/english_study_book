@@ -37,6 +37,8 @@ module.exports = router => {
 
   /**
    * GET /captcha/check
+   * @params captchaID
+   * @params captcha
    * [验证验证码]
    * @return 'success'
    */
@@ -49,11 +51,11 @@ module.exports = router => {
     try{
       const decoded = jwt.verify(req.query.captchaID, keys.secret);
       if(decoded.text !== md5(req.query.captcha + keys.secret)) {
-        return res.send({error:1, message: '验证码输入错误!'})
+        return res.status(441).send({message: '验证码输入错误!'})
       }
-      return res.send({error:0, message: '验证码通过!'})
+      return res.send({message: '验证码通过!'})
     } catch (e) {
-      return res.send({error:2, message: '验证码失效,请重新输入!'})
+      return res.status(441).send({message: '验证码失效,请重新输入!'})
     }
    
   })
@@ -80,7 +82,7 @@ module.exports = router => {
       'id': user.id,
       'username': user.username
     }, keys.secret, {expiresIn: 60*60*60})
-    res.send({success: true, token: token})
+    res.send({success: true, token: token, message: '登陆成功!'})
   })
 
    /**
@@ -106,7 +108,7 @@ module.exports = router => {
     await User.create(newUser)
     return res.send({
       success: true,
-      message: newUser.username + ' register success'
+      message: newUser.username + ' 注册成功'
     })
   })
 
@@ -128,7 +130,7 @@ module.exports = router => {
     if(isExist) {
       return res.status(441).send({
         success: false,
-        message: '用户已存在'
+        message: '邮箱已被注册'
       })
     }
     // 发送验证码
@@ -152,7 +154,7 @@ module.exports = router => {
         captchaID: captchaID
       })
     } catch(e) {
-      res.status(441).send('无效邮箱')
+      res.status(441).send({'message': '无效邮箱'})
     }
     
   })

@@ -21,10 +21,11 @@ http.interceptors.request.use(function (config) {
 // 添加响应拦截器
 http.interceptors.response.use(function (response) {
   // 对响应数据做点什么
-  console.log(response)
+  // console.log(response)
   return response
 }, function (error) {
   if (error.response) {
+    console.log(error.response)
     let message = error.response.data.message ? error.response.data.message : '发生错误'
     Message.error(message)
   } else {
