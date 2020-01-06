@@ -14,7 +14,7 @@
         </el-form-item>
         <el-form-item label="验证码" prop="captcha">
           <el-input v-model="userForm.captcha"></el-input>
-          <div v-if="captcha" v-html="captcha"></div>
+          <div style="display:inline-block" v-if="captcha" v-html="captcha" @click="getCaptcha"></div>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm()">登录</el-button>
@@ -31,16 +31,20 @@ export default {
     let checkCaptcha = async (rule, value, callback) => {
       // 失焦 发送GET /checkCaptcha 校验
       if (value === '') {
-        callback(new Error('请输入验证码'));
+        return callback(new Error('请输入验证码'))
       }
       let res = await this.$http.get(`/captcha/check?captchaID=${this.captchaID}&captcha=${value}`)
-      if(res.data.success) {
-        callback();
-      } else{
-        callback(new Error(res.data.message));
+      if (!res.data.error) {
+        return callback()
+      } else {
+        if (res.data.error === 2) {
+          this.getCaptcha()
+        }
+        return callback(new Error(res.data.message))
       }
-    };
+    }
     return {
+      // 展示验证码图片
       captcha: '',
       // 验证码唯一的id
       captchaID: '',
@@ -64,23 +68,23 @@ export default {
     }
   },
   methods: {
-    submitForm() {
+    submitForm () {
       this.$refs['userForm'].validate(async (valid) => {
         if (valid) {
           let res = await this.$http.post('/user/login', this.userForm)
           localStorage.setItem('token', res.data.token)
         } else {
-          console.log('error submit!!');
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     async getCaptcha () {
       // 获取验证码
       let res = await this.$http.get('/captcha/get')
       this.captcha = res.data.captcha
       // 保存验证码唯一的id
-      this.captchaID = res.data._id
+      this.captchaID = res.data.captchaID
     }
   },
   created () {

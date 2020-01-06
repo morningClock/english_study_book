@@ -2,7 +2,13 @@ const jwt = require('jsonwebtoken')
 const md5 = require('md5')
 const keys = require('../../configs/keys.js')
 const User = require('../../models/User.js')
+// 生成验证码图片
 const svgCaptcha = require('svg-captcha')
+// 发送邮件
+const nodemailer = require('nodemailer')
+
+const randomCode = require('../../plugins/random.js')
+
 module.exports = router => {
   /**
    * GET /captcha/get
@@ -18,13 +24,13 @@ module.exports = router => {
     // 生成svg标签
     const captcha = svgCaptcha.create();
     // 该图片独特的id,5分钟后失效
-    const _id = jwt.sign({
+    const captchaID = jwt.sign({
       text: md5(captcha.text.toLowerCase() + keys.secret)
     }, keys.secret, {expiresIn: 60*5})
     // 生成携带加密验证码的token
     // 用于验证对应验证码使用
     res.send({
-      _id: _id,
+      captchaID: captchaID,
       captcha: captcha.data,
     })
   })
@@ -35,7 +41,7 @@ module.exports = router => {
    * @return 'success'
    */
   router.get('/captcha/check', (req, res) => {
-    // 验证验证码逻辑
+    // 校验验证码逻辑
     // 1.获取captchaID与前端输入的验证码
     // 2.将captchaID的payload
     // 3.校验payload的text与输入的验证码md5
@@ -43,11 +49,11 @@ module.exports = router => {
     try{
       const decoded = jwt.verify(req.query.captchaID, keys.secret);
       if(decoded.text !== md5(req.query.captcha + keys.secret)) {
-        res.send({success:false, message: '验证码输入错误!'})
+        return res.send({error:1, message: '验证码输入错误!'})
       }
-      res.send({success:true, message: '验证码通过!'})
+      return res.send({error:0, message: '验证码通过!'})
     } catch (e) {
-      res.send({success:false, message: '验证码失效!'})
+      return res.send({error:2, message: '验证码失效,请重新输入!'})
     }
    
   })
@@ -55,19 +61,19 @@ module.exports = router => {
   /**
    * POST /login
    * [登录接口]
-   * @return 'success'
+   * @return 
    */
   router.post('/user/login', async (req, res) => {
     // 登录逻辑
     // 1.获取登录表单信息
     // 2.校验是否存在用户
     // 3.校验密码
-    // 4.通过校验，签发token
+    // 4.通过校验，签发token(60小时有效)
     const user = await User.findOne({'username': req.body.username})
     if(!user) {
       return res.status(441).send({success: false, message: '用户不存在'})
     } else if(user.password !== md5(req.body.password + keys.secret)) {
-      res.status(441).send({success: false, message: '密码错误'})
+      return res.status(441).send({success: false, message: '密码错误'})
     }
     // 密码正确,签发token
     const token = jwt.sign({
@@ -80,14 +86,14 @@ module.exports = router => {
    /**
    * POST /register
    * [注册接口]
-   * @return 'success'
+   * @return 
    */
   router.post('/user/register', async (req, res) => {
     // 注册逻辑
     // 1.接受注册表单
     // 2.检查是否存在用户，存在返回已存在用户
     // 3.不存在新建用户
-    let newUser = req.body
+    const newUser = req.body
     const isExist = await User.findOne({'username': newUser.username})
     if(isExist) {
       return res.status(441).send({
@@ -102,6 +108,53 @@ module.exports = router => {
       success: true,
       message: newUser.username + ' register success'
     })
+  })
+
+  /**
+   * GET /captcha/sendmail
+   * @params email       注册邮箱
+   * [邮箱注册接口]
+   * @return 该次验证唯一标识
+   */
+  router.get('/captcha/sendmail', async (req, res) => {
+    // 邮箱注册逻辑
+    // 1.检测是否存在使用该邮箱的用户
+    // 2.不存在则发送随机验证码字串(一分钟有效)
+    // 3.用户输入验证码，正确则注册成功
+    // (60秒可以重新发送验证码字串)
+    const targetmail = req.query.email
+    let captchaCode = randomCode()
+    const isExist = await User.findOne({'email': targetmail})
+    if(isExist) {
+      return res.status(441).send({
+        success: false,
+        message: '用户已存在'
+      })
+    }
+    // 发送验证码
+    // 引入邮箱配置
+    const mailConfig = require('../../configs/mail.js')({
+      targetmail,
+      captchaCode
+    })
+    try{
+      // 新建发送者
+      let transporter = nodemailer.createTransport(mailConfig.emailserver);
+      // 发送邮件
+      let info = await transporter.sendMail(mailConfig.mail);
+      
+      // jwt加密验证码，用于回传时识别来源以及要识别的验证码
+      const captchaID = jwt.sign({
+        text: md5(captchaCode + keys.secret)
+      }, keys.secret, {expiresIn: 60*5})
+
+      res.send({
+        captchaID: captchaID
+      })
+    } catch(e) {
+      res.status(441).send('无效邮箱')
+    }
+    
   })
 
   /**
