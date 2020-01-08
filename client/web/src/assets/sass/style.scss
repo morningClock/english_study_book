@@ -1,0 +1,221 @@
+@import './variable';
+
+// 清晨色调主题
+// .theme-morning{
+//   // 1.网站色调类
+//   @each $colorName,$color in $colors-dusk {
+//     // 文本颜色
+//     .text-#{$colorName} {
+//       color: $color
+//     }
+//     // 背景颜色
+//     .bg-#{$colorName} {
+//       background-color: $color
+//     }
+//   }
+//   .login-background {
+//     background: url('../../assets/img/background-morning.png') no-repeat;
+//     background-position: top center;
+//     background-size: 1920px auto;
+//   }
+// }
+
+// 黄昏色调主题
+.theme-dusk{
+  // 1.网站色调类
+  @each $colorName,$color in $colors-dusk {
+    // 文本颜色
+    .text-#{$colorName} {
+      color: $color
+    }
+    // 背景颜色
+    .bg-#{$colorName} {
+      background-color: $color
+    }
+  }
+  .login-background {
+    background: url('../../assets/img/background-dusk.png') no-repeat;
+    background-position: top center;
+    background-size: 1920px auto;
+  }
+}
+
+// 夜晚色调主题
+.theme-drak{
+  // 1.网站色调类
+  @each $colorName,$color in $colors-drak {
+    // 文本颜色
+    .text-#{$colorName} {
+      color: $color
+    }
+    // 背景颜色
+    .bg-#{$colorName} {
+      background-color: $color
+    }
+  }
+  .login-background {
+    background: url('../../assets/img/background-drak.png') no-repeat;
+    background-position: top center;
+    background-size: 1920px auto;
+  }
+}
+
+// 公共类
+/* Reset CSS */
+* {
+  // 防止padding撑大盒子
+  box-sizing: border-box;
+  // 避免边框高亮，影响风格
+  outline: none;
+}
+
+html {
+  font-size: 14px;
+  color: map-get($colors-dusk, 'gray-1');
+  background-color: map-get($colors-dusk, 'light');
+}
+h1,h2,h3{
+  font-size: 1.4286rem;
+  font-weight: bold;
+}
+
+// 浮动
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+ /* 清除浮动 */
+ .clearfix:before,
+ .clearfix:after {
+   display: table;
+   content: "";
+ }
+ .clearfix:after {
+   clear: both
+ }
+ 
+// 文本对齐方式
+@each $direction in (center, left, right, justify) {
+  .text-#{$direction} {
+    text-align: $direction;
+  }
+}
+
+// 文本大小
+@each $sizeName,$size in $fontSize {
+  .fs-#{$sizeName} {
+    font-size: $size * $base-font-size;
+  }
+}
+
+// 文本粗细
+@each $weight in (normal, bold) {
+  .fs-#{$weight} {
+    font-weight: $weight;
+  }
+}
+// 文本超出省略
+.text.ellipsis {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+// 文本不换行
+.text-nowrap {
+  white-space: nowrap;
+}
+
+// 布局相关
+.d-iblock {
+  display: inline-block;
+}
+// flex布局
+.d-flex {
+  display: flex;
+}
+// flex适应宽度
+.flex-1 {
+  flex-grow: 1;
+}
+// flex-wrap换行
+.flex-wrap {
+  flex-wrap: wrap;
+}
+// flex-shrink不压缩
+.flex-shrink {
+  flex-shrink: 0;
+}
+// 垂直方向
+.flex-col {
+  flex-direction : column;
+}
+
+$flex-ai: (
+  'start': flex-start,
+  'end': flex-end,
+  'center': center,
+  'base': baseline,
+  'stretch': stretch
+);
+// align-item交叉轴对齐
+@each $alignName,$align in $flex-ai {
+  .ai-#{$alignName} {
+    align-items: $align;
+  }
+}
+// justify-content主轴对齐
+$flex-jc: (
+  'start': flex-start,
+  'end': flex-end,
+  'center': center,
+  'between': space-between,
+  'around': space-around
+);
+@each $alignName,$align in $flex-jc {
+  .jc-#{$alignName} {
+    justify-content: $align;
+  }
+}
+
+// 边距设定
+/* 
+  边距定义
+  类似于bootstrap根据级别安排边距
+ */
+ $spaces-types: (
+  m: margin,
+  p: padding
+);
+$spaces-directions: (
+  t: top,
+  r: right,
+  b: bottom,
+  l: left
+);
+@each $typeKey,$type in $spaces-types {
+  @each $sizeKey,$size in $spaces-sizes {
+    // m-level 环绕
+    .#{$typeKey}-#{$sizeKey} {
+      #{$type}: $size * $spaces-base-size;
+    }
+    // mx-level my-level 水平或垂直
+    .#{$typeKey}x-#{$sizeKey} {
+      #{$type}-left: $size * $spaces-base-size;
+      #{$type}-right: $size * $spaces-base-size;
+    }
+    .#{$typeKey}y-#{$sizeKey} {
+      #{$type}-top: $size * $spaces-base-size;
+      #{$type}-bottom: $size * $spaces-base-size;
+    }
+    // mt-level 单边
+    @each $directionKey,$direction in $spaces-directions { 
+      .#{$typeKey}#{$directionKey}-#{$sizeKey} {
+        #{$type}-#{$direction}: $size * $spaces-base-size;
+      }
+    }
+  }
+}
+

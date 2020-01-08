@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../views/Index/Home.vue'
+const Home = () => import('../views/Index/Home.vue')
 const Login = () => import('../views/UserCenter/Login')
 const Register = () => import('../views/UserCenter/Register')
 
@@ -12,13 +12,13 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login,
-      meta: {isPublic: true}
+      meta: { isPublic: true }
     },
     {
       path: '/register',
       name: 'register',
       component: Register,
-      meta: {isPublic: true}
+      meta: { isPublic: true }
     },
     {
       path: '/',
@@ -28,14 +28,16 @@ const router = new Router({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   if(to.meta.isPublic) {
-//     // 公开可访问
-//     return next()
-//   } else{
-//     // 不可访问的跳转回login
-//     return next('/login')
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (to.meta.isPublic) {
+    // 公开可访问
+    return next()
+  } else if (localStorage.getItem('token')) {
+    return next()
+  } else {
+    // 不可访问的跳转回login
+    return next('/login')
+  }
+})
 
 export default router

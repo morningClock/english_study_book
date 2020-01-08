@@ -1,0 +1,57 @@
+$colors-dusk: (
+  'primary-1': #FFE160,
+  'primary-2': #c9aa5f,
+  'primary-3': #41261C,
+  'primary-4': #FF865C,
+  'tips': #68dff0,
+  'drak': #333,
+  'gray': #555555,
+  'gray-1': #666666,
+  'gray-2': #797979,
+  'gray-3':#989898,
+  'light': #f2f2f2,
+  'white': #fff,
+);
+
+$colors-drak: (
+  'primary-1': #0F141C,
+  'primary-2': #c9aa5f,
+  'primary-3': #41261C,
+  'primary-4': #FF865C,
+  'tips': #68dff0,
+  'drak': #333,
+  'gray': #555555,
+  'gray-1': #666666,
+  'gray-2': #797979,
+  'gray-3':#989898,
+  'light': #f2f2f2,
+  'white': #fff,
+  'black': #000
+);
+
+// 这里定义多一个basefont-size,后期可以抽离出单独设置文字的大小而不影响盒子
+$base-font-size: 1rem;
+$fontSize: (
+  'xs': 0.6429,
+  'sm': 0.8571,
+  'md': 1,
+  'lg':1.1429,
+  'xl':1.2857,
+  'xxl': 1.4286,
+  'xxxl': 1.7143
+);
+
+// 边距
+$spaces-base-size: 1rem;
+$spaces-sizes: (
+  0: 0,
+  1: .25,
+  2: .5,
+  3: .75,
+  4: 1,
+  5: 1.25,
+  6: 1.5,
+  7: 1.75,
+  8: 2,
+  9: 3
+);

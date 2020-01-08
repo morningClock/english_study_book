@@ -122,7 +122,7 @@ module.exports = router => {
     // 邮箱注册逻辑
     // 1.检测是否存在使用该邮箱的用户
     // 2.不存在则发送随机验证码字串(一分钟有效)
-    // 3.用户输入验证码，正确则注册成功
+    // 3.用户输入验证码，正确则验证成功
     // (60秒可以重新发送验证码字串)
     const targetmail = req.query.email
     let captchaCode = randomCode()

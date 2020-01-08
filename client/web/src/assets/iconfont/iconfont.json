@@ -1,0 +1,65 @@
+{
+  "id": "1601966",
+  "name": "englishstudybook",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "593498",
+      "name": "收缩",
+      "font_class": "shrink",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "741859",
+      "name": "个人 (2)",
+      "font_class": "person",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "1374722",
+      "name": "短信",
+      "font_class": "message",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "1447805",
+      "name": "测试",
+      "font_class": "test",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "4437605",
+      "name": "统计报表",
+      "font_class": "statistics",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "5330263",
+      "name": "任务",
+      "font_class": "task",
+      "unicode": "e772",
+      "unicode_decimal": 59250
+    },
+    {
+      "icon_id": "7404314",
+      "name": "时间",
+      "font_class": "time",
+      "unicode": "e77c",
+      "unicode_decimal": 59260
+    },
+    {
+      "icon_id": "11749504",
+      "name": "记事本",
+      "font_class": "book",
+      "unicode": "e69f",
+      "unicode_decimal": 59039
+    }
+  ]
+}

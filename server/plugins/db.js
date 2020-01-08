@@ -8,5 +8,5 @@ module.exports = async () => {
     useNewUrlParser: true,
     useUnifiedTopology: true
   }).then(() => console.log('mongodb is connection'))
-  .catch(err => console.log(err));;
+  .catch(err => console.log(err));
 }
