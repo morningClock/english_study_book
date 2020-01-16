@@ -25,7 +25,10 @@ http.interceptors.response.use(function (response) {
   return response
 }, function (error) {
   if (error.response) {
-    console.log(error.response)
+    if (error.response.status === 499) {
+      // token过期
+      localStorage.removeItem('token')
+    }
     let message = error.response.data.message ? error.response.data.message : '发生错误'
     Message.error(message)
   } else {

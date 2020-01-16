@@ -1,4 +1,4 @@
-$colors-dusk: (
+$colors: (
   'primary-1': #FFE160,
   'primary-2': #c9aa5f,
   'primary-3': #41261C,
@@ -9,24 +9,13 @@ $colors-dusk: (
   'gray-1': #666666,
   'gray-2': #797979,
   'gray-3':#989898,
+  'gray-4': #aeb2b7,
   'light': #f2f2f2,
   'white': #fff,
-);
-
-$colors-drak: (
-  'primary-1': #0F141C,
-  'primary-2': #c9aa5f,
-  'primary-3': #41261C,
-  'primary-4': #FF865C,
-  'tips': #68dff0,
-  'drak': #333,
-  'gray': #555555,
-  'gray-1': #666666,
-  'gray-2': #797979,
-  'gray-3':#989898,
-  'light': #f2f2f2,
-  'white': #fff,
-  'black': #000
+  'success':#67C23A,
+  'warning':#E6A23C,
+  'danger':#F56C6C,
+  'info':#909399,
 );
 
 // 这里定义多一个basefont-size,后期可以抽离出单独设置文字的大小而不影响盒子

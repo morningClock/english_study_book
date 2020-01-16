@@ -10,7 +10,7 @@ module.exports = (options) => {
       jwt.verify(token, keys.secret)
       next()
     } catch(err) {
-      res.status(402).send({message:'token 无效'})
+      res.status(499).send({message:'token 无效'})
     }
     
   }

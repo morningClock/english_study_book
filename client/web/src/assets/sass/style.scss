@@ -1,64 +1,17 @@
 @import './variable';
 
-// 清晨色调主题
-// .theme-morning{
-//   // 1.网站色调类
-//   @each $colorName,$color in $colors-dusk {
-//     // 文本颜色
-//     .text-#{$colorName} {
-//       color: $color
-//     }
-//     // 背景颜色
-//     .bg-#{$colorName} {
-//       background-color: $color
-//     }
-//   }
-//   .login-background {
-//     background: url('../../assets/img/background-morning.png') no-repeat;
-//     background-position: top center;
-//     background-size: 1920px auto;
-//   }
-// }
-
-// 黄昏色调主题
-.theme-dusk{
-  // 1.网站色调类
-  @each $colorName,$color in $colors-dusk {
-    // 文本颜色
-    .text-#{$colorName} {
-      color: $color
-    }
-    // 背景颜色
-    .bg-#{$colorName} {
-      background-color: $color
-    }
+// 1.网站色调类
+@each $colorName,$color in $colors {
+  // 文本颜色
+  .text-#{$colorName} {
+    color: $color
   }
-  .login-background {
-    background: url('../../assets/img/background-dusk.png') no-repeat;
-    background-position: top center;
-    background-size: 1920px auto;
+  // 背景颜色
+  .bg-#{$colorName} {
+    background-color: $color
   }
 }
 
-// 夜晚色调主题
-.theme-drak{
-  // 1.网站色调类
-  @each $colorName,$color in $colors-drak {
-    // 文本颜色
-    .text-#{$colorName} {
-      color: $color
-    }
-    // 背景颜色
-    .bg-#{$colorName} {
-      background-color: $color
-    }
-  }
-  .login-background {
-    background: url('../../assets/img/background-drak.png') no-repeat;
-    background-position: top center;
-    background-size: 1920px auto;
-  }
-}
 
 // 公共类
 /* Reset CSS */
@@ -71,12 +24,15 @@
 
 html {
   font-size: 14px;
-  color: map-get($colors-dusk, 'gray-1');
-  background-color: map-get($colors-dusk, 'light');
+  color: map-get($colors, 'gray-1');
+  background-color: map-get($colors, 'light');
 }
-h1,h2,h3{
+h1, h2, h3{
   font-size: 1.4286rem;
   font-weight: bold;
+}
+a, a:hover{
+  color: inherit;
 }
 
 // 浮动
@@ -127,6 +83,10 @@ h1,h2,h3{
 .text-nowrap {
   white-space: nowrap;
 }
+// 选中图标
+.cursor-pointer {
+  cursor: pointer;
+}
 
 // 布局相关
 .d-iblock {
@@ -139,6 +99,12 @@ h1,h2,h3{
 // flex适应宽度
 .flex-1 {
   flex-grow: 1;
+}
+.flex-2 {
+  flex-grow: 2;
+}
+.flex-3 {
+  flex-grow: 3;
 }
 // flex-wrap换行
 .flex-wrap {
@@ -179,43 +145,3 @@ $flex-jc: (
     justify-content: $align;
   }
 }
-
-// 边距设定
-/* 
-  边距定义
-  类似于bootstrap根据级别安排边距
- */
- $spaces-types: (
-  m: margin,
-  p: padding
-);
-$spaces-directions: (
-  t: top,
-  r: right,
-  b: bottom,
-  l: left
-);
-@each $typeKey,$type in $spaces-types {
-  @each $sizeKey,$size in $spaces-sizes {
-    // m-level 环绕
-    .#{$typeKey}-#{$sizeKey} {
-      #{$type}: $size * $spaces-base-size;
-    }
-    // mx-level my-level 水平或垂直
-    .#{$typeKey}x-#{$sizeKey} {
-      #{$type}-left: $size * $spaces-base-size;
-      #{$type}-right: $size * $spaces-base-size;
-    }
-    .#{$typeKey}y-#{$sizeKey} {
-      #{$type}-top: $size * $spaces-base-size;
-      #{$type}-bottom: $size * $spaces-base-size;
-    }
-    // mt-level 单边
-    @each $directionKey,$direction in $spaces-directions { 
-      .#{$typeKey}#{$directionKey}-#{$sizeKey} {
-        #{$type}-#{$direction}: $size * $spaces-base-size;
-      }
-    }
-  }
-}
-
