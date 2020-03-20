@@ -160,12 +160,12 @@ module.exports = router => {
   })
 
   /**
-   * POST /retrieve
-   * [找回密码接口]
+   * POST /reset
+   * [修改密码接口]
    * @return 'success'
    */
-  router.post('/user/retrieve', (req, res) => {
-    res.send('retrieve success')
+  router.post('/user/reset', (req, res) => {
+    res.send('reset success')
   })
 
   /**
