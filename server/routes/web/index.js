@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
+
 // 引入user相关接口
 require('./user.js')(router)
+require('./words.js')(router)
 
 const authMiddleware = require('../../middlewares/auth.js')
 

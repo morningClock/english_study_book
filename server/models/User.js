@@ -1,3 +1,6 @@
+/**
+ * 用户登录信息表
+ */
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
@@ -8,11 +11,7 @@ const userSchema = new mongoose.Schema({
     require: true,
     // 查询时不被选择
     // select: false
-  },
-  words: [
-    // 该用户记录的单词
-    {type: mongoose.SchemaTypes.ObjectId, ref: 'Word'}
-  ]
+  }
 })
 
 module.exports = mongoose.model('User', userSchema)

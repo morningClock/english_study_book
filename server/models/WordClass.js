@@ -1,3 +1,6 @@
+/**
+ * 词性表
+ */
 const mongoose = require('mongoose')
 
 const wordClassSchema = new mongoose.Schema({

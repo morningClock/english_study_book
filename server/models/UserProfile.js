@@ -1,6 +1,10 @@
+/**
+ * 用户信息表
+ */
 const mongoose = require('mongoose')
 
 const userProfileSchema = new mongoose.Schema({
+  userId: {type: mongoose.SchemaTypes.ObjectId, require: true},
   // 姓名
   nickname: { type: String, required: true},
   // 头像

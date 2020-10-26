@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const md5 = require('md5')
 const keys = require('../../configs/keys.js')
 const User = require('../../models/User.js')
+const UserWordList = require('../../models/UserWordList.js')
 // 生成验证码图片
 const svgCaptcha = require('svg-captcha')
 // 发送邮件
@@ -105,7 +106,8 @@ module.exports = router => {
     }
     // 加密+特殊字串
     newUser.password = md5(newUser.password + keys.secret)
-    await User.create(newUser)
+    let user = await User.create(newUser)
+    await UserWordList.create({userId: user._id}) //创建用户单词表
     return res.send({
       success: true,
       message: newUser.username + ' 注册成功'

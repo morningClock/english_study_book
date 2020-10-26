@@ -7,8 +7,12 @@ module.exports = (options) => {
     const token = req.headers.authorization.split(' ').pop()
     try {
       // 发生错误直接catch
-      jwt.verify(token, keys.secret)
-      next()
+      jwt.verify(token, keys.secret, (err, decoded) => {
+        // 验证并挂载userId在请求体中
+        req.userId = decoded.id
+        next()
+      })
+      
     } catch(err) {
       res.status(499).send({message:'token 无效'})
     }
