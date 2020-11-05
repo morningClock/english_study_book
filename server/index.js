@@ -22,9 +22,6 @@ app.all('*', (req, res, next) => {
     next()
 })
 
-// 连接mongodb数据库
-require('./plugins/db.js')();
-
 // 引入路由(传入app实例)
 require('./routes/web')(app)
 

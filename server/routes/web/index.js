@@ -13,7 +13,8 @@ module.exports = app => {
    * [测试接口服务是否正常]
    * @return 'success'
    */
-  router.get('/test', authMiddleware(), (req, res) => {
+  router.get('/test',  (req, res) => {
+    console.log(req.body)
     res.send('success')
   })
 

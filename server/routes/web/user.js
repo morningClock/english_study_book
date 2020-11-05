@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
 const md5 = require('md5')
 const keys = require('../../configs/keys.js')
-const User = require('../../models/User.js')
-const UserWordList = require('../../models/UserWordList.js')
+// 数据库
+const mySQL = require('../../plugins/db_mysql')
 // 生成验证码图片
 const svgCaptcha = require('svg-captcha')
 // 发送邮件
@@ -72,7 +72,7 @@ module.exports = router => {
     // 2.校验是否存在用户
     // 3.校验密码
     // 4.通过校验，签发token(60小时有效)
-    const user = await User.findOne({'username': req.body.username})
+    let user = await mySQL.findOne(`select * from user where username = ?`, [req.body.username])
     if(!user) {
       return res.status(441).send({success: false, message: '用户不存在'})
     } else if(user.password !== md5(req.body.password + keys.secret)) {
@@ -96,8 +96,8 @@ module.exports = router => {
     // 1.接受注册表单
     // 2.检查是否存在用户，存在返回已存在用户
     // 3.不存在新建用户
-    const newUser = req.body
-    const isExist = await User.findOne({'username': newUser.username})
+    const body = req.body
+    const isExist = await mySQL.findOne(`select * from user where email = ?`, [req.body.email])
     if(isExist) {
       return res.status(441).send({
         success: false,
@@ -105,9 +105,13 @@ module.exports = router => {
       })
     }
     // 加密+特殊字串
-    newUser.password = md5(newUser.password + keys.secret)
-    let user = await User.create(newUser)
-    await UserWordList.create({userId: user._id}) //创建用户单词表
+    const newUser = {
+      email: body.email,
+      username: body.username,
+      password: md5(body.password + keys.secret)
+    }
+    let user = await mySQL.insertOne('user', newUser)
+    console.log('新增用户：', user)
     return res.send({
       success: true,
       message: newUser.username + ' 注册成功'
@@ -128,7 +132,7 @@ module.exports = router => {
     // (60秒可以重新发送验证码字串)
     const targetmail = req.query.email
     let captchaCode = randomCode()
-    const isExist = await User.findOne({'email': targetmail})
+    const isExist = await mySQL.findOne(`select * from user where email = ?`, [req.body.email])
     if(isExist) {
       return res.status(441).send({
         success: false,

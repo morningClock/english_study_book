@@ -1,5 +1,10 @@
 const keys = {
-  database: 'mongodb://127.0.0.1:27017/english_book',
+  // 数据库配置
+  host: 'localhost',
+  user: 'root',
+  password: '123456',
+  database: 'english_book',
+  // md5
   secret: 'zyh1026englishbook'
 }
 
